@@ -1,0 +1,37 @@
+server:
+  port: ${myapp.port:8989}
+  
+spring:
+  datasource:
+    #mariadb는 자신이 사용하고자 하는 스키마를 입력해야지 들어가짐.
+    url: jdbc:mariadb://localhost:3306/MyBlog
+    username: root
+    password: 1234
+    driver-class-name: org.mariadb.jdbc.Driver
+
+
+  jpa:
+    database-platform: org.hibernate.dialect.MariaDB103Dialect  #JPA가 사용할 database의 dialect 설정
+    properties:
+      hibernate:
+        hibernate:
+        "[format_sql]": true            #SQL을 보기 좋게 출력
+        "[user_sql_comments]": true     #SQL생성 시 주석 포함
+        "[highlight_sql]": true         #SQL에 색깔
+        "[hbm2ddl.auto]": update
+        #"[implicit_naming_strategy]": "org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy" -> 기본값으로 설정되어 있어서 따로 설정하지 않아도 무방함
+    open-in-view: false
+    show-sql: true
+    
+logging:
+  level:
+    org:
+      apache:
+        coyote:
+          http11: debug
+
+      hiberante:
+        SQL: debug
+
+    boardexample:
+      myboard: info
