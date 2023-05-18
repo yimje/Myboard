@@ -1,5 +1,5 @@
 package com.example.myblog.dto;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import com.example.myblog.model.Board;
 import com.example.myblog.model.Reply;
 import com.example.myblog.model.User;
@@ -44,4 +44,7 @@ public class BoardDto {
         this.replyList = board.getReplyList();
         return  this;
     }
+
+
+
 }

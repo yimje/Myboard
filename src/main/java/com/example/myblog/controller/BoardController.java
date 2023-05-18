@@ -48,8 +48,11 @@ public class BoardController {
     }
 
     @GetMapping("/board/{id}")
-    public String articles(@PathVariable Long id, Model model){
+    public String articles(@PathVariable Long id, Model model) throws Throwable {
         Board articles = boardService.details(id);
+        boardService.updateViews(id);
+        model.addAttribute("board", articles);
+        return "board/articles";
     }
 
 }
