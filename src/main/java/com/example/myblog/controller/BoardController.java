@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RequiredArgsConstructor
 @Controller
@@ -40,6 +41,15 @@ public class BoardController {
         Page<Board> knowledge = boardService.categoryList(pageable, "knowledge");
         model.addAttribute("boards", knowledge);
         return "category/knowledge";
+    }
+    @GetMapping("/board/writeForm")
+    public String writeForm(){
+        return "board/wrieForm";
+    }
+
+    @GetMapping("/board/{id}")
+    public String articles(@PathVariable Long id, Model model){
+        Board articles = boardService.details(id);
     }
 
 }
