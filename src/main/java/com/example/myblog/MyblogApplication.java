@@ -20,7 +20,7 @@ public class MyblogApplication {
         return new BCryptPasswordEncoder();
 
     }
-    protected void config(AuthenticationManagerBuilder builder)throws Exception{
+    protected void configure(AuthenticationManagerBuilder builder)throws Exception{
         builder.userDetailsService(principalDetailService).passwordEncoder(encoderPW());
     }
     public static void main(String[] args) {
