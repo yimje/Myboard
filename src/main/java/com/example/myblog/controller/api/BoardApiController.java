@@ -15,8 +15,8 @@ public class BoardApiController {
     private final BoardService boardService;
     @PostMapping("/api/board")
     public ResponseEntity write(@RequestBody BoardDto boardDto, @AuthenticationPrincipal PrincipalDetails principalDetails){
+        return ResponseEntity.ok(boardService.write(boardDto, principalDetails.getUser()));
 
-        return ResponseEntity.ok(boardService.write(boardDto, String.valueOf(principalDetails.getUser())));
     }
 
     @GetMapping("api/board/{id}")

@@ -3,6 +3,7 @@ package com.example.myblog.service;
 
 import com.example.myblog.dto.BoardDto;
 import com.example.myblog.model.Board;
+import com.example.myblog.model.User;
 import com.example.myblog.repository.BoardRepository;
 import com.example.myblog.repository.ReplyRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +27,7 @@ public class BoardService {
     private final ReplyRepository replyRepository;
 
     @Transactional
-    public Long write(BoardDto boardDto, String user) {
+    public Long write(BoardDto boardDto, User user) {
         boardDto.setUser(user);
         Board saveBoard = boardDto.toEntity();
         boardRepository.save(saveBoard);
@@ -79,5 +80,6 @@ public class BoardService {
         BoardDto boardDto = new BoardDto();
         return (List<BoardDto>) boardRepository.findAll().stream().map(board -> boardDto.toDto((Board) board)).collect(Collectors.toList());
     }
+
 
 }
