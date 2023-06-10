@@ -1,4 +1,4 @@
-package com.MyBlog.project.dto.Response;
+package com.MyBlog.project.dto.response;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;

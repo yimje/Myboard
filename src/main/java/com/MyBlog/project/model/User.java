@@ -8,7 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import com.MyBlog.project.dto.Response.UserResponseDto;
+import com.MyBlog.project.dto.response.UserResponseDto;
 
 import lombok.Builder;
 import lombok.Getter;
