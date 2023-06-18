@@ -7,10 +7,21 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import com.MyBlog.project.config.auth.PrincipalDetails;
+import com.MyBlog.project.config.oauth.provider.GoogleUserInfo;
+import com.MyBlog.project.config.oauth.provider.OAuth2UserInfo;
+import com.MyBlog.project.model.RoleType;
+import com.MyBlog.project.model.User;
 import com.MyBlog.project.repository.UserRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
+	/* Oauth를 통해 받은 User의 정보를 가지고 회원 가입을 강제로 진행하는 service임.
+	 * 또한 User의 정보(이름, 이메일, 권한 등)을 PrincipalDetails에 담아서 Session에 저장함 
+	 */
 
 	@Autowired
 	private UserRepository userRepository;
@@ -19,7 +30,51 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 	//해당 메소드를 통해 PrincipalDetails 객체를 반환함으로써, Authentication 객체 안에 들어갈 수 있다.
 	@Override
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-		return super.loadUser(userRequest);
+		OAuth2User oauth2User = super.loadUser(userRequest);
+		OAuth2UserInfo oauth2UserInfo = null;
+		
+		if(userRequest.getClientRegistration().getRegistrationId().equals("google")) {
+			System.out.println("구글 로그인을 진행합니다.");
+			oauth2UserInfo = new GoogleUserInfo(oauth2User.getAttributes());
+			
+//		} else if(userRequest.getClientRegistration().getRegistrationId().equals("facebook")) {
+//			System.out.println("페이스북 로그인을 진행합니다.");
+//			oAuth2UserInfo = new FacebookUserInfo(oauth2User.getAttributes());
+//			
+//		} else if(userRequest.getClientRegistration().getRegistrationId().equals("naver")){
+//			System.out.println("네이버 로그인을 진행합니다.");
+//			oAuth2UserInfo = new NaverUserInfo((Map)oauth2User.getAttributes().get("response"));
+//			
+		} else {
+			System.out.println("현재는 구글과 페이스북과 네이버만 지원합니다.");
+		}
+		
+		String provider = oauth2UserInfo.getProvider();
+		String providerId = oauth2UserInfo.getProviderID();
+		String username = provider+"_"+providerId;
+		//OAuth 로그인은 비밀번호를 저장하지 않음
+		String password = "Oauth2 Loging User";
+		String email = oauth2UserInfo.getEmail();
+		//String role = "ROLE_USER";
+		
+		User userEntity = userRepository.findByUsername(username);
+		
+		if(userEntity != null) {
+			System.out.println("이미 회원입니다. 이전에 OAuth로 회원가입을 진행했습니다.");
+		} else {
+			userEntity = User.builder()
+					.username(username)
+					.password(password)
+					.email(email)
+					.role(RoleType.USER)
+					.provider(providerId)
+					.providerId(providerId)
+					.build();
+			userRepository.save(userEntity);
+		}
+		
+		return new PrincipalDetails(userEntity, oauth2User.getAttributes());
+	
 	}
 	
 	

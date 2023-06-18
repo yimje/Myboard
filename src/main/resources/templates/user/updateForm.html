@@ -1,0 +1,51 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="/layout/header.html :: fragment-header"></div>
+</head>
+
+<body>
+<div th:replace="/layout/nav.html :: fragment-nav"></div>
+
+<div class="container">
+    <form>
+        <input type="hidden" id="id" th:value="${principal.getId()}">
+
+        <div th:if="${principal.provider!=null}">
+            <div class="form-group">
+                <label for="username">아이디</label>
+                <input type="text" th:value="${principal.getUsername()}" class="form-control" placeholder="ID"
+                       id="username" readonly>
+            </div>
+            <div class="form-group">
+                <label for="email">이메일</label>
+                <input type="email" th:value="${principal.getEmail()}" class="form-control" placeholder="Email"
+                       id="email" readonly>
+            </div>
+        </div>
+        <div th:unless="${principal.provider != null}">
+            <div class="form-group">
+                <label for="username">아이디</label>
+                <input type="text" th:value="${principal.getUsername()}" class="form-control" placeholder="ID"
+                       id="username"
+                       readonly>
+            </div>
+            <div class="form-group">
+                <label for="password">패스워드</label>
+                <input type="password" class="form-control" placeholder="Password" id="password">
+            </div>
+            <div class="form-group">
+                <label for="email">이메일</label>
+                <input type="email" th:value="${principal.getEmail()}" class="form-control" placeholder="Email"
+                       id="email">
+            </div>
+        </div>
+
+    </form>
+    <button id="btn-update" class="btn btn-primary">수정 완료</button>
+</div>
+
+<script src="/js/user.js"></script>
+<footer th:replace="/layout/footer.html :: fragment-footer"></footer>
+</body>
+</html>

@@ -28,22 +28,24 @@ public class SecurityConfig {
 	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.csrf().disable().httpBasic().and()
-			.authorizeHttpRequests()
-			.antMatchers("/", "/auth/**", "/js/**", "/css/**", "/image/**").permitAll() //해당 경로는 어떤 경로든 접근할 수 있음.
-			.anyRequest() //위의 설정한 경로 외에 모든 경로를 아래에서 설정한다.
-			.authenticated() //인증된 사용자만이 접근 가능하도록 설정함.
-			.and().formLogin() //form 기반의 로그인을 사용
-			.loginPage("/auth/loginForm") // 로그인 페이지의 view를 설정함.
-			.loginProcessingUrl("/auth/login") // 로그인을 처리할 URL 지정, 기본값은 /login
-			.defaultSuccessUrl("/") //로그인 성공시 redirect될 URL
-			.and()
-			//여기서부턴 OAuth2 설정
-			.oauth2Login()
-			.loginPage("/auth/loginForm") //기본 로그인과 동일한 페이지에서 하도록 설정
-			.userInfoEndpoint()
-			.userService(principalOauth2UserService); 
-		return http.build();
+		return http.csrf(csrf -> csrf.disable())
+				   .httpBasic(httpBasic -> httpBasic.disable())
+				   
+				   //인증 권한 설정. 현재 아래 경로 외에 권한이 필요하다고만 되어 있음.
+				   .authorizeHttpRequests(authroize -> authroize
+						   .antMatchers("/", "/auth/**", "/js/**", "/css/**", "/image/**").permitAll()
+						   .anyRequest()
+						   .authenticated())
+				   
+				   //기본 로그인 설정
+				   .formLogin(fromLogin -> fromLogin.loginPage("/auth/loginForm")
+						   .loginProcessingUrl("/auth/login")
+						   .defaultSuccessUrl("/"))
+				   
+				   //Oauth2 로그인 설정
+			       .oauth2Login(oauth2Login -> oauth2Login.loginPage("/auth/loginForm")
+			    		   .userInfoEndpoint()
+			    		   .userService(principalOauth2UserService))
+			       .build();
 	}
-
 }

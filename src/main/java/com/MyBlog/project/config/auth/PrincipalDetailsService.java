@@ -27,6 +27,7 @@ public class PrincipalDetailsService implements UserDetailsService {
 			return new PrincipalDetails(userEntity);
 		}
 		return null;
+		//return new UsernameNotFoundException("해당 유저를 찾을 수 없습니다.");
 		//-> PrincipalDetails 객체가 DB에서 User정보를 가져와 필드로 저장한다.
 		//-> PrincipalDetails가 리턴되면 Authentication 내부에 저장된다.
 		// 그런 후 Authentication이 스프링 시큐리티의 session 내부에 들어가게 된다.
