@@ -1,6 +1,6 @@
 package com.MyBlog.project.config.oauth;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -22,9 +22,11 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 	/* Oauth를 통해 받은 User의 정보를 가지고 회원 가입을 강제로 진행하는 service임.
 	 * 또한 User의 정보(이름, 이메일, 권한 등)을 PrincipalDetails에 담아서 Session에 저장함 
 	 */
-
-	@Autowired
-	private UserRepository userRepository;
+	
+	//순환참조를 방지하지 위해서 @RequiredArgsConstructor을 사용을 권장한다. 이는 final 필드에 대해서 생성자를 통한 주입을 시켜준다.
+	//@Autowired는 지양해야할 습관이다.
+	private final UserRepository userRepository;
+	private final PasswordEncoder encoderPwd;
 	
 	//OAuth로 부터 받은 userRequest 데이터에 대해서 후처리 되는 메소드
 	//해당 메소드를 통해 PrincipalDetails 객체를 반환함으로써, Authentication 객체 안에 들어갈 수 있다.
@@ -53,7 +55,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 		String providerId = oauth2UserInfo.getProviderID();
 		String username = provider+"_"+providerId;
 		//OAuth 로그인은 비밀번호를 저장하지 않음
-		String password = "Oauth2 Loging User";
+		String password = encoderPwd.encode("Oauth2 Loging User");
 		String email = oauth2UserInfo.getEmail();
 		//String role = "ROLE_USER";
 		

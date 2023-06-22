@@ -2,10 +2,13 @@ package com.MyBlog.project.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 
 import com.MyBlog.project.dto.BoardDto;
 
@@ -39,9 +42,9 @@ public class Board extends BaseTimeEntity{
 	@Column(nullable =false)
 	private int views;
 	
-	//@ManyToOne(fetch = FetchType.LAZY)
-	//@JoinColumn(name = "userId")
-	//private User user;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "userId")
+	private User user;
 	
 	public void updateBoard(String title, String content, String category) {
 		this.title = title;
@@ -56,6 +59,7 @@ public class Board extends BaseTimeEntity{
                 .content(content)
                 .category(category)
                 .views(views)
+                .user(user)
                 .build();
 	}
 }

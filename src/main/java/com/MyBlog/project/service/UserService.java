@@ -2,6 +2,8 @@ package com.MyBlog.project.service;
 
 import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.MyBlog.project.dto.request.UserSaveRequestDto;
@@ -17,7 +19,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class UserService {
 	
+	@Autowired
 	private final UserRepository userRepository;
+	@Autowired
+	private final BCryptPasswordEncoder encoder;
 	
 	//회원 가입 DB 저장
 	@Transactional
@@ -25,6 +30,8 @@ public class UserService {
 		if(userSaveRequestDto.getUsername().equals("damin")) {
 			userSaveRequestDto.setRole(RoleType.ADMIN);
 		}
+		String encodePassword = encoder.encode(userSaveRequestDto.getPassword());
+		userSaveRequestDto.setPassword(encodePassword);
 		User user = userSaveRequestDto.toEntity();
 		userRepository.save(user);
 	}

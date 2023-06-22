@@ -10,10 +10,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.MyBlog.project.model.Board;
+import com.MyBlog.project.model.User;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
 
-	List<Board> findAllById(Long id);
+	List<Board> findAllByUserOrderByIdDesc(User user);
 
     @Modifying
     @Query("update Board p set p.views = p.views + 1 where p.id = :id")

@@ -1,6 +1,7 @@
 package com.MyBlog.project.dto;
 
 import com.MyBlog.project.model.Board;
+import com.MyBlog.project.model.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,6 +22,7 @@ public class BoardDto {
     private String content;
     private String category;
     private int views;
+    private User user;
     
     public Board toEntity() {
     	return Board.builder()
@@ -29,6 +31,7 @@ public class BoardDto {
     			.content(content)
     			.category(category)
     			.views(views)
+    			.user(user)
     			.build();
     }
     
@@ -39,6 +42,7 @@ public class BoardDto {
     	 this.content = board.getContent();
          this.category = board.getCategory();
          this.views = board.getViews();
+         this.user = board.getUser();
          return this;
     }
     

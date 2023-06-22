@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 @EnableGlobalMethodSecurity(prePostEnabled = true) // Spring Security 활성화 / 해당 메소드 실행 전 체크함.
 @RequiredArgsConstructor
 public class SecurityConfig {
+	
 	private final PrincipalOauth2UserService principalOauth2UserService;
 	
 	@Bean

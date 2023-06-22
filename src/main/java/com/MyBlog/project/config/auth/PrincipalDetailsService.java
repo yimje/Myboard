@@ -18,11 +18,12 @@ public class PrincipalDetailsService implements UserDetailsService {
 	@Autowired
 	private final UserRepository userRepository;
 	
-	//view에서 파라미터로 넘어온 username을 토대로 User 객체를 PrincipalDetails 객체에 저장하는 메소드
+	//view에서 파라미터로 넘어온 username을 토대로 User 찾아서 객체를 PrincipalDetails 객체에 저장하는 메소드
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		
 		User userEntity = userRepository.findByUsername(username);
+		
 		if(userEntity != null) {
 			return new PrincipalDetails(userEntity);
 		}

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.MyBlog.project.dto.BoardDto;
 import com.MyBlog.project.model.Board;
+import com.MyBlog.project.model.User;
 import com.MyBlog.project.repository.BoardRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,8 @@ public class BoardService {
 
 	//게시글 저장
 	@Transactional
-	public Long write(BoardDto boardDto) {
+	public Long write(BoardDto boardDto, User user) {
+		boardDto.setUser(user);
 		Board saveBoard = boardDto.toEntity();
 		boardRepository.save(saveBoard);
 		return saveBoard.getId();

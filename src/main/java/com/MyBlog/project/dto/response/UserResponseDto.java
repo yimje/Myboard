@@ -47,5 +47,4 @@ public class UserResponseDto {
 				   .email(email)
 				   .build();
 	}
-
 }

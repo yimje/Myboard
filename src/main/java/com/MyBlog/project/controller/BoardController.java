@@ -1,5 +1,6 @@
 package com.MyBlog.project.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -17,6 +18,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Controller
 public class BoardController {
+	
+	@Autowired
 	private final BoardService boardService;
 	
 	//전체 글 보기
@@ -44,12 +47,13 @@ public class BoardController {
         return "category/knowledge";
     }
 	
+	//== 게시글 등록 ==//
 	@GetMapping("/board/writeForm")
 	public String writeForm() {
 		return "board/writeForm";
 	}
 	
-	//상세 조회 + 조회수 업데이트
+	//== 상세 조회, 조회수 업데이트 ==//
 	@GetMapping("/board/{id}")
     public String articles(@PathVariable Long id, Model model) {
         Board articles = boardService.details(id);
@@ -58,7 +62,7 @@ public class BoardController {
         return "board/articles";
     }
 
-	//수정
+	//== 게시글 수정 ==//
     @GetMapping("/board/{id}/updateForm")
     public String updateForm(@PathVariable Long id, Model model) {
         Board articles = boardService.details(id);

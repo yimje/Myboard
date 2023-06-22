@@ -2,7 +2,6 @@ package com.MyBlog.project.dto.request;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import com.MyBlog.project.model.RoleType;
@@ -12,7 +11,7 @@ import lombok.Builder;
 import lombok.Data;
 
 @Data
-public class UserSaveRequestDto {
+public class UserLoginRequestDto {
     @NotBlank
     @Size(min = 4, max = 12)
     @NotEmpty(message = "아이디 입력은 필수 입니다.")
@@ -32,10 +31,10 @@ public class UserSaveRequestDto {
     private RoleType role;
 	
     //디폴트 생성자가 있어야지 바인딩 되는데 원래 코드에는 없음....
-    public UserSaveRequestDto() {};
+    public UserLoginRequestDto() {};
     
 	@Builder
-	public UserSaveRequestDto(String username, String password, String email, RoleType roleType) {
+	public UserLoginRequestDto(String username, String password, String email, RoleType roleType) {
 		this.username = username;
 		this.password = password;
 		this.email = email;
@@ -45,7 +44,7 @@ public class UserSaveRequestDto {
 	public User toEntity() {
 		return User.builder()
 				   .username(username)
-				   .password(password)
+				   .password(password2)
 				   .email(email)
 				   .role(role)
 				   .build();
