@@ -35,7 +35,7 @@ public class BoardService {
 	//페이징 처리한 전체목록
 	@Transactional
 	public Page<Board> list(Pageable pageable){
-		return boardRepository.findAll(pageable);
+		return boardRepository.findAllWithUser(pageable);
 	}
 	
 	//페이징 처리x 전체 목록
@@ -51,8 +51,9 @@ public class BoardService {
 	
 	//id로 정보를 던지는 상세보기
 	@Transactional
-	public Board details(Long id) {
-		return boardRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("아이디를 찾을 수 없습니다"));
+	public BoardDto details(Long id) {
+		Board board = boardRepository.findByIdWithUser(id); //.orElseThrow(() -> new IllegalArgumentException("아이디를 찾을 수 없습니다"));
+		return board.toDto();
 	}
 	
 	//DTO로 정보를 던지는 상세보기

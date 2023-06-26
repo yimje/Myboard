@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+>
+
+<head>
+    <th:block th:replace="/layout/header.html :: fragment-header"></th:block>
+</head>
+
+<!--<sec:authorize access="isAuthenticated()">-->
+<!--    <sec:authentication property="principal" var="principal" />-->
+<!--</sec:authorize>-->
+
+<body>
+<div th:replace="/layout/nav.html :: fragment-nav"></div>
+
+<div class="container">
+    <form>
+        <div class="form-group">
+            <div class="form-group">
+                <label for="category">카테고리</label>
+                <select class="form-control" id="category">
+                    <option th:value="daily">🌈일상 공유🌈</option>
+                    <option th:value="knowledge">🤔지식 공유🤔</option>
+                </select>
+            </div>
+            <label for="title">제목</label>
+            <input type="text" class="form-control" placeholder="제목을 입력하세요" id="title">
+        </div>
+        <div class="form-group">
+            <label for="content">내용</label>
+            <textarea class="form-control summernote" rows="5" id="content"></textarea>
+        </div>
+    </form>
+    <button id="btn-write" class="btn btn-primary">글쓰기 완료</button>
+
+</div>
+<!--웹에디터 오픈소스 썸머노트-->
+<script>
+    $('.summernote').summernote({
+        placeholder: '텍스트를 입력해 주세요',
+        tabsize: 2,
+        height: 300
+    });
+</script>
+<script src="/js/board.js"></script>
+<footer th:replace="/layout/footer.html :: fragment-footer"></footer>
+</body>
+</html>

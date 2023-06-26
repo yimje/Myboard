@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+
+<head>
+    <th:block th:replace="/layout/header.html :: fragment-header"></th:block>
+</head>
+
+<!--<sec:authorize access="isAuthenticated()">-->
+<!--    <sec:authentication property="principal" var="principal" />-->
+<!--</sec:authorize>-->
+
+<body>
+<div th:replace="/layout/nav.html :: fragment-nav"></div>
+
+<div class="container">
+    <div sec:authorize="hasRole('ADMIN')">
+        <!-- 관리자가 본인 글 확인-->
+        <div align="right" th:if="${board.getUser().username==#authentication.name}">
+            <button class="btn btn-secondary" onclick="history.back()">돌아가기</button>
+            <a th:href="@{/board/{id}/updateForm(id=${board.id})}" class="btn btn-primary">글 수정</a>
+            <button id="btn-delete" class="btn btn-danger">글 삭제</button>
+        </div>
+        <!-- 관리자가 일반 유저 글 확인-->
+        <div align="right" th:unless="${board.getUser().username==#authentication.name}">
+            <button class="btn btn-secondary" onclick="history.back()">돌아가기</button>
+            <button id="btn-delete" class="btn btn-danger">글 삭제</button>
+        </div>
+    </div>
+
+    <!-- 일반유저가 본인글 확인-->
+    <div sec:authorize="hasRole('USER')">
+        <div align="right" th:if="${board.getUser().username==#authentication.name}">
+            <button class="btn btn-secondary" onclick="history.back()">돌아가기</button>
+            <a th:href="@{/board/{id}/updateForm(id=${board.id})}" class="btn btn-primary">글 수정</a>
+            <button id="btn-delete" class="btn btn-danger">글 삭제</button>
+        </div>
+        <div align="right" th:unless="${board.getUser().username==#authentication.name}">
+            <button class="btn btn-secondary" onclick="history.back()">돌아가기</button>
+        </div>
+    </div>
+    <br>
+    
+    <table class="table">
+    <tr>
+        <th>글 번호</th><td><span th:text="${board.id}"></span></td>
+    </tr>
+    <tr>
+        <th>작성자</th><td><span><b><i th:text="${board.getUser().getUsername()}"></i></b></span></td>
+    </tr>
+    <tr>
+        <th>카테고리</th><td><span th:text="${board.getCategory()}"></span></td>
+    </tr>
+    <tr>
+        <th>조회수</th><td><span th:text="${board.views}"></span></td>
+    </tr>
+	</table>
+	<br>
+	
+	<div class="container border p-3">
+		<div class="form-group">
+	        <h3 class="title">제목 : <span th:text="${board.title}"></span></h3>
+		</div>
+	    <div class="form-group">
+	        <div class="content" th:utext="${board.content}"></div>
+	    </div>
+	</div>
+
+
+
+<!--        댓글     
+    <div class="card">
+        <form>
+            <input type="hidden" id="boardId" th:value="${board.id}">
+            <div class="card-body">
+                <textarea id="reply-content" class="form-control" rows="1"></textarea>
+            </div>
+            <div class="card-footer">
+                <button type="button" id="btn-reply-save" class="btn btn-primary">등록</button>
+            </div>
+        </form>
+    </div>
+    <br>
+
+    <div class="card">
+        <div class="card-header">댓글 리스트</div>
+        <ul th:each="reply : ${board.replyList}" id="reply-box" class="list-group">
+            <li th:id="|reply-${reply.id}|" class="list-group-item">
+                <div th:if="${reply.user.username == #authentication.name}" class="d-flex ">
+                    <div>
+                        <b th:text="|작성자 : ${reply.user.username} &nbsp|" class="font-italic">작성자 : </b>
+                    </div>
+                    <button th:onclick="|javascript:index.deleteReply(${board.id}, ${reply.id})|"
+                            class="btn btn-danger">삭제
+                    </button>
+                </div>
+                <div th:unless="${reply.user.username == #authentication.name}" class="d-flex ">
+                    <div>
+                        <b th:text="|작성자 : ${reply.user.username} &nbsp|" class="font-italic">작성자 : </b>
+                    </div>
+                </div>
+                <div th:utext="${reply.content}">댓글 내용</div>
+            </li>
+        </ul>
+    </div> -->
+</div>
+
+
+<script src="/js/board.js"></script>
+<footer th:replace="/layout/footer.html :: fragment-footer"></footer>
+</body>
+</html>

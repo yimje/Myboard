@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <th:block th:replace="/layout/header.html :: fragment-header"></th:block>
+    <style>
+        h2 {
+            text-align: center;
+        }
+
+    </style>
+</head>
+
+<!--<sec:authorize access="isAuthenticated()">-->
+<!--    <sec:authentication property="principal" var="principal" />-->
+<!--</sec:authorize>-->
+
+<body>
+<div th:replace="/layout/nav.html :: fragment-nav"></div>
+
+<div sec:authorize="isAuthenticated()">
+    <div class="container">
+        <div class="card m-2" th:each="board : ${boards.content}">
+            <div class="card-body">
+                <h4 class="card-title" th:text="${board.getTitle()}">제목</h4>
+                <a th:href="@{/board/{id}(id=${board.getId()})}" class="btn btn-primary">상세보기</a>
+                <h6 align="left" style="margin-top:10px" th:text="'작성자 : ' + ${board.getUser.username}">카테고리</h6>
+                <h6 align="right" style="margin-top:-30px" th:text="'조회수 : ' + ${board.getViews()}">조회수</h6>
+            </div>
+        </div>
+    </div>
+
+    <!-- 게시물이 하나라도 있을 때-->
+    <div th:if="!${boards.isEmpty()}">
+
+        <!--처음,끝이 아닐 때-->
+        <div th:if="!${boards.last} and !${boards.first}">
+            <ul class="pagination justify-content-center">
+                <li class="page-item"><a class="page-link"
+                                         th:href="@{?page={num}(num=${boards.getNumber()-1})}">이전</a>
+                </li>
+                <li class="page-item"><a class="page-link"
+                                         th:href="@{?page={num}(num=${boards.getNumber()+1})}">다음</a>
+                </li>
+            </ul>
+        </div>
+
+        <!--처음,끝일 때-->
+        <div th:unless="!${boards.last} and !${boards.first} and ${boards > 1}">
+            <!--첫 페이지 일때-->
+            <div th:if="${boards.first}">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled"><a class="page-link"
+                                                      th:href="@{?page={num}(num=${boards.getNumber()-1})}">이전</a>
+                    </li>
+                    <li class="page-item"><a class="page-link"
+                                             th:href="@{?page={num}(num=${boards.getNumber()+1})}">다음</a>
+                    </li>
+                </ul>
+            </div>
+            <!--끝 페이지 일 때-->
+            <div th:unless="${boards.first}">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item"><a class="page-link"
+                                             th:href="@{?page={num}(num=${boards.getNumber()-1})}">이전</a>
+                    </li>
+                    <li class="page-item disabled"><a class="page-link"
+                                                      th:href="@{?page={num}(num=${boards.getNumber()+1})}">다음</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div th:unless="!${boards.isEmpty()}">
+        <h2>게시물을 작성해 보세요!</h2>
+    </div>
+</div>
+
+
+<footer th:replace="/layout/footer.html :: fragment-footer"></footer>
+</body>
+</html>

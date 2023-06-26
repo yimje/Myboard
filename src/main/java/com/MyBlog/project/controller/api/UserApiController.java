@@ -42,12 +42,6 @@ public class UserApiController {
         return new ResponseDto<Integer>(HttpStatus.OK.value(), 1); // 자바 오브젝트를 JSON으로 변환하여 전송 (JACKSON)
     }
     
-//    @PostMapping("/auth/loginProc")
-//    public ResponseDto<Integer> login(@RequestBody @Valid UserLoginRequestDto userLoginRequestDto){
-//    	
-//    	
-//    }
-    
     @PutMapping("/user")
     public ResponseDto<Integer> update(@RequestBody UserUpdateDto userUpdateDto) {
         User user = userUpdateDto.toEntity();

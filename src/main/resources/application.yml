@@ -18,7 +18,7 @@ spring:
         "[format_sql]": true            #SQL을 보기 좋게 출력
         "[user_sql_comments]": true     #SQL생성 시 주석 포함
         "[highlight_sql]": true         #SQL에 색깔
-        "[hbm2ddl.auto]": create
+        "[hbm2ddl.auto]": update
         #"[implicit_naming_strategy]": "org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy" -> 기본값으로 설정되어 있어서 따로 설정하지 않아도 무방함
     open-in-view: false
     show-sql: true

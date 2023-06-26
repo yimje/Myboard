@@ -38,29 +38,9 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 	@Override
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 		OAuth2User oauth2User = super.loadUser(userRequest);
-		OAuth2UserInfo oauth2UserInfo = null;
-		
 		String loginProvider = userRequest.getClientRegistration().getRegistrationId();
 		
-		if(loginProvider.equals("google")) {
-			System.out.println("구글 로그인을 진행합니다.");
-			oauth2UserInfo = new GoogleUserInfo(oauth2User.getAttributes());
-			
-		} else if(loginProvider.equals("facebook")) {
-			System.out.println("페이스북 로그인을 진행합니다.");
-			oauth2UserInfo = new FacebookUserInfo(oauth2User.getAttributes());
-			
-		} else if(loginProvider.equals("naver")){
-			System.out.println("네이버 로그인을 진행합니다.");
-			oauth2UserInfo = new NaverUserInfo((Map<String, Object>)oauth2User.getAttributes().get("response"));
-			
-		} else if(loginProvider.equals("kakao")){
-			System.out.println("카카오 로그인을 진행합니다.");
-			oauth2UserInfo = new KakaoUserInfo(oauth2User.getAttributes());
-			
-		} else {
-			System.out.println("지원하지 않는 로그인입니다.");
-		}
+		OAuth2UserInfo oauth2UserInfo = oauth2UserInfoCreate(loginProvider, oauth2User);
 		
 		String provider = oauth2UserInfo.getProvider();
 		String providerId = oauth2UserInfo.getProviderID();
@@ -88,6 +68,32 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 		
 		return new PrincipalDetails(userEntity, oauth2User.getAttributes());
 	
+	}
+	
+	private OAuth2UserInfo oauth2UserInfoCreate(String loginProvider, OAuth2User oauth2User) {
+		OAuth2UserInfo oauth2UserInfo = null;
+		
+		if(loginProvider.equals("google")) {
+			System.out.println("구글 로그인을 진행합니다.");
+			oauth2UserInfo = new GoogleUserInfo(oauth2User.getAttributes());
+			
+		} else if(loginProvider.equals("facebook")) {
+			System.out.println("페이스북 로그인을 진행합니다.");
+			oauth2UserInfo = new FacebookUserInfo(oauth2User.getAttributes());
+			
+		} else if(loginProvider.equals("naver")){
+			System.out.println("네이버 로그인을 진행합니다.");
+			oauth2UserInfo = new NaverUserInfo((Map<String, Object>)oauth2User.getAttributes().get("response"));
+			
+		} else if(loginProvider.equals("kakao")){
+			System.out.println("카카오 로그인을 진행합니다.");
+			oauth2UserInfo = new KakaoUserInfo(oauth2User.getAttributes());
+			
+		} else {
+			System.out.println("지원하지 않는 로그인입니다.");
+		}
+		
+		return oauth2UserInfo;
 	}
 	
 	

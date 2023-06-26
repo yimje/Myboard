@@ -42,9 +42,9 @@ public class Board extends BaseTimeEntity{
 	@Column(nullable =false)
 	private int views;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "userId")
-	private User user;
+	@ManyToOne(fetch = FetchType.LAZY) //EAGER=호출시 바로 로드
+    @JoinColumn(name = "userId") //DB상 필드값은 userId로 설정
+    private User user;
 	
 	public void updateBoard(String title, String content, String category) {
 		this.title = title;

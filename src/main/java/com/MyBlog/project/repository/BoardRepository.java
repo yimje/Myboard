@@ -20,5 +20,16 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     @Query("update Board p set p.views = p.views + 1 where p.id = :id")
     int updateViews(@Param("id") Long id);
 
-    Page<Board> findByCategory(Pageable pageable, String category);
+    //Page<Board> findByCategory(Pageable pageable, String category);
+    
+    @Query(value = "SELECT b FROM Board b JOIN FETCH b.user WHERE b.id = :id")
+    Board findByIdWithUser(@Param("id") long id);
+
+    @Query(value = "SELECT b FROM Board b JOIN FETCH b.user WHERE b.category = :category",
+            countQuery = "SELECT COUNT(b) FROM Board b JOIN b.user WHERE b.category = :category")
+    Page<Board> findByCategory(Pageable pageable, @Param("category") String category);
+    
+    @Query(value = "SELECT b FROM Board b JOIN FETCH b.user",
+    	       countQuery = "SELECT COUNT(b) FROM Board b JOIN b.user")
+    Page<Board> findAllWithUser(Pageable pageable);
 }

@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.MyBlog.project.dto.BoardDto;
 import com.MyBlog.project.model.Board;
 import com.MyBlog.project.service.BoardService;
 
@@ -56,7 +57,7 @@ public class BoardController {
 	//== 상세 조회, 조회수 업데이트 ==//
 	@GetMapping("/board/{id}")
     public String articles(@PathVariable Long id, Model model) {
-        Board articles = boardService.details(id);
+		BoardDto articles = boardService.details(id);
         boardService.updateViews(id);
         model.addAttribute("board", articles);
         return "board/articles";
@@ -65,7 +66,7 @@ public class BoardController {
 	//== 게시글 수정 ==//
     @GetMapping("/board/{id}/updateForm")
     public String updateForm(@PathVariable Long id, Model model) {
-        Board articles = boardService.details(id);
+        BoardDto articles = boardService.details(id);
         model.addAttribute("board", articles);
         return "board/updateForm";
     }
